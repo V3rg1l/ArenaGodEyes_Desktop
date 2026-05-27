@@ -1,0 +1,13 @@
+{
+  "name": "arena-god-eyes-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check src/main.cjs && node --check src/preload.cjs"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0"
+  }
+}
