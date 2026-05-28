@@ -1,5 +1,6 @@
-const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const { app, BrowserWindow, dialog, ipcMain, desktopCapturer } = require("electron");
 const path = require("node:path");
+const fs = require("node:fs/promises");
 const { execFile, spawn } = require("node:child_process");
 
 const rendererUrl =
@@ -123,6 +124,37 @@ if ($obs) { $obs | ConvertTo-Json -Depth 3 }
     path: getObsExecutableCandidates()[0],
     errorMessage: "OBS is not running.",
   };
+}
+
+async function listCaptureSources() {
+  const sources = await desktopCapturer.getSources({
+    types: ["window", "screen"],
+    fetchWindowIcons: false,
+    thumbnailSize: { width: 0, height: 0 },
+  });
+
+  return sources.map((source) => ({
+    id: source.id,
+    name: source.name,
+    displayId: source.display_id || null,
+  }));
+}
+
+async function saveRecordingBuffer(payload) {
+  const directoryPath = payload?.directoryPath;
+  const fileName = payload?.fileName;
+  const arrayBuffer = payload?.arrayBuffer;
+
+  if (!directoryPath || !fileName || !arrayBuffer) {
+    throw new Error("directoryPath, fileName, and arrayBuffer are required.");
+  }
+
+  await fs.mkdir(directoryPath, { recursive: true });
+
+  const targetPath = path.join(directoryPath, fileName);
+  const buffer = Buffer.from(arrayBuffer);
+  await fs.writeFile(targetPath, buffer);
+  return targetPath;
 }
 
 function isPackagedApp() {
@@ -262,5 +294,7 @@ ipcMain.handle("desktop:select-directory", async () => {
 });
 
 ipcMain.handle("desktop:list-wow-windows", async () => listWowWindows());
+ipcMain.handle("desktop:list-capture-sources", async () => listCaptureSources());
+ipcMain.handle("desktop:save-recording-buffer", async (_event, payload) => saveRecordingBuffer(payload));
 
 ipcMain.handle("desktop:ensure-obs-running", async () => ensureObsRunning());

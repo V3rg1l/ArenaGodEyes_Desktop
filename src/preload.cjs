@@ -6,5 +6,7 @@ contextBridge.exposeInMainWorld("arenaGodEyesDesktop", {
   selectVideoFile: () => ipcRenderer.invoke("desktop:select-video-file"),
   selectDirectory: () => ipcRenderer.invoke("desktop:select-directory"),
   listWowWindows: () => ipcRenderer.invoke("desktop:list-wow-windows"),
+  listCaptureSources: () => ipcRenderer.invoke("desktop:list-capture-sources"),
+  saveRecordingBuffer: (payload) => ipcRenderer.invoke("desktop:save-recording-buffer", payload),
   ensureObsRunning: () => ipcRenderer.invoke("desktop:ensure-obs-running"),
 });
