@@ -6,9 +6,13 @@
   "scripts": {
     "start": "electron .",
     "check": "node --check src/main.cjs && node --check src/preload.cjs",
+    "publish:backend:mac": "node scripts/publish-backend.cjs osx-arm64",
+    "publish:backend:win": "node scripts/publish-backend.cjs win-x64",
     "package:dir": "electron-builder --dir",
     "package:mac": "electron-builder --mac",
-    "package:win": "electron-builder --win"
+    "package:win": "electron-builder --win",
+    "package:full:mac": "npm run publish:backend:mac && npm run package:mac",
+    "package:full:win": "npm run publish:backend:win && npm run package:win"
   },
   "devDependencies": {
     "electron": "^37.2.0",

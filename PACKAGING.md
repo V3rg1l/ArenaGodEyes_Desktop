@@ -13,20 +13,20 @@ This desktop shell now supports two execution modes:
 2. package the Electron app
 3. run the packaged desktop app, which boots the local backend binary automatically
 
-## Backend Publish Examples
+## Backend Publish Commands
 
 macOS:
 
 ```powershell
-cd ArenaGodEyes.Backend
-dotnet publish src/ArenaGodEyes.ApiLocal -c Release -r osx-arm64 --self-contained true -o ../ArenaGodEyes.Desktop/resources/backend
+cd ArenaGodEyes.Desktop
+npm run publish:backend:mac
 ```
 
 Windows:
 
 ```powershell
-cd ArenaGodEyes.Backend
-dotnet publish src/ArenaGodEyes.ApiLocal -c Release -r win-x64 --self-contained true -o ../ArenaGodEyes.Desktop/resources/backend
+cd ArenaGodEyes.Desktop
+npm run publish:backend:win
 ```
 
 ## Electron Packaging Commands
@@ -41,7 +41,9 @@ Platform targets:
 
 - `npm run package:mac`
 - `npm run package:win`
+- `npm run package:full:mac`
+- `npm run package:full:win`
 
 ## Important Note
 
-The packaged app expects the published backend executable to exist inside `resources/backend` before packaging.
+The `package:full:*` commands publish the backend first and then package Electron.
