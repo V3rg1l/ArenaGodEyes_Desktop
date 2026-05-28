@@ -9,12 +9,22 @@ This project group is reserved for the Electron desktop shell.
 - communicate with the local .NET backend
 - own desktop-specific settings and packaging flows
 - expose safe local dialogs and file actions to the UI
-- later coordinate OBS recording controls and local video workflows
+- bootstrap and host the local workflow end to end
 
 ## Important Rule
 
 The user should open ArenaGodEyes as a local desktop app and should not need a browser in production.
 
-## Current Priority
+## Current State
 
-After the documentation update, this is the next major architecture step to implement properly.
+The current desktop shell already:
+
+- starts the backend with `dotnet run`
+- opens the UI in Electron
+- exposes safe file and directory pickers
+- supports a packaged-mode backend path via `resources/backend`
+
+## Next Step
+
+- validate full publish/package flow on macOS and Windows
+- keep the shell aligned with the backend/video workflow as richer metrics land

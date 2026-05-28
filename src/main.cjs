@@ -8,6 +8,10 @@ const backendUrl = process.env.ARENA_GOD_EYES_BACKEND_URL || "http://127.0.0.1:5
 
 let backendProcess = null;
 
+function isPackagedApp() {
+  return app.isPackaged;
+}
+
 function backendProjectPath() {
   return path.join(
     __dirname,
@@ -18,6 +22,15 @@ function backendProjectPath() {
     "ArenaGodEyes.ApiLocal",
     "ArenaGodEyes.ApiLocal.csproj",
   );
+}
+
+function packagedBackendRoot() {
+  return path.join(process.resourcesPath, "backend");
+}
+
+function packagedBackendExecutablePath() {
+  const extension = process.platform === "win32" ? ".exe" : "";
+  return path.join(packagedBackendRoot(), `ArenaGodEyes.ApiLocal${extension}`);
 }
 
 function createWindow() {
@@ -43,21 +56,29 @@ function startBackend() {
     return;
   }
 
-  backendProcess = spawn(
-    "dotnet",
-    [
-      "run",
-      "--project",
-      backendProjectPath(),
-      "--urls",
-      backendUrl,
-    ],
-    {
-      cwd: path.join(__dirname, "..", ".."),
-      windowsHide: true,
-      stdio: "ignore",
-    },
-  );
+  const spawnConfig = isPackagedApp()
+    ? {
+        command: packagedBackendExecutablePath(),
+        args: ["--urls", backendUrl],
+        cwd: packagedBackendRoot(),
+      }
+    : {
+        command: "dotnet",
+        args: [
+          "run",
+          "--project",
+          backendProjectPath(),
+          "--urls",
+          backendUrl,
+        ],
+        cwd: path.join(__dirname, "..", ".."),
+      };
+
+  backendProcess = spawn(spawnConfig.command, spawnConfig.args, {
+    cwd: spawnConfig.cwd,
+    windowsHide: true,
+    stdio: "ignore",
+  });
 
   backendProcess.on("exit", () => {
     backendProcess = null;

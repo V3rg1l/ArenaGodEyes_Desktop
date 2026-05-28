@@ -5,9 +5,36 @@
   "main": "src/main.cjs",
   "scripts": {
     "start": "electron .",
-    "check": "node --check src/main.cjs && node --check src/preload.cjs"
+    "check": "node --check src/main.cjs && node --check src/preload.cjs",
+    "package:dir": "electron-builder --dir",
+    "package:mac": "electron-builder --mac",
+    "package:win": "electron-builder --win"
   },
   "devDependencies": {
-    "electron": "^37.2.0"
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.arenagodeyes.desktop",
+    "productName": "ArenaGodEyes",
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/backend",
+        "to": "backend"
+      }
+    ],
+    "directories": {
+      "buildResources": "resources"
+    },
+    "mac": {
+      "category": "public.app-category.games"
+    },
+    "win": {
+      "target": "nsis"
+    }
   }
 }
