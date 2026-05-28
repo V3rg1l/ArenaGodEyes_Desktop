@@ -15,6 +15,12 @@ This project group is reserved for the Electron desktop shell.
 
 The user should open ArenaGodEyes as a local desktop app and should not need a browser in production.
 
+The shell must reinforce the feeling of dedicated arena coach software, not a website wrapped in Electron.
+
+Canonical direction:
+
+- `ArenaGodEyes.Docs/src/DESKTOP_UI_UX_DIRECTION.md`
+
 ## Current State
 
 The current desktop shell already:
@@ -28,3 +34,4 @@ The current desktop shell already:
 
 - validate full publish/package flow on macOS and Windows
 - keep the shell aligned with the backend/video workflow as richer metrics land
+- keep the top-level app framing aligned with sidebar, status-bar, review, recording, and diagnostics workflows
